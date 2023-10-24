@@ -2,9 +2,6 @@ from menu import Menu, MenuItem
 from coffee_maker import CoffeeMaker
 from money_machine import MoneyMachine
 
-# TODO 1. Prompt user
-# TODO 2. Turn off Coffee Machine
-# TODO 3. Print report
 # TODO 4. Check resources sufficient
 # TODO 5. Process coins.
 # TODO 6. Check transaction successful
@@ -16,6 +13,8 @@ def command(choice):
         return -1
     elif choice == "report":
         return 0
+    else:
+        return 1
 
 
 def report(maker, machine):
@@ -30,12 +29,15 @@ def coffee_machine():
     c_maker = CoffeeMaker()
     m_machine = MoneyMachine()
     while running:
-        prompt = input("What would you like? (espresso/latte/cappuccino): ").lower()
+        prompt = input(f"What would you like? ({c_menu.get_items()}): ").lower()
         status = command(prompt)
         if status == -1:
             return
         elif status == 0:
             report(c_maker, m_machine)
+        else:
+            if c_menu.find_drink(prompt) and c_maker.is_resource_sufficient(prompt):
+                purchase_amount = m_machine.process_coins()
 
 
 coffee_machine()
